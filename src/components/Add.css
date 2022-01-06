@@ -1,0 +1,34 @@
+.title{
+  height: 50px;
+}
+.title, .price{
+  text-align: center;
+}
+
+
+.list img{
+  display: block;
+  width: 200px;
+  height: 200px;
+  margin: 0 auto;
+}
+
+a{
+  text-decoration: none;
+}
+
+a:hover{
+  text-decoration: none;
+  background-color: grey;
+}
+
+.pagebar{
+  font-size: 20px;
+  text-align: center;
+}
+
+table { width: 200px; min-height: 25px; line-height: 25px; text-align: center; border-color:black; border-collapse: collapse;}
+table td{
+    width:100px;
+}
+
