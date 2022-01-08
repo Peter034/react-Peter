@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import { NavLink, Route, Redirect } from 'react-router-dom';
 import Add from './components/Add';
 import List from './components/List';
-import Update from './components/Update'
-
+import '@popperjs/core';
+import 'bootstrap/dist/js/bootstrap.min.js';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 
 export default class App extends Component {
@@ -19,14 +19,20 @@ export default class App extends Component {
   getApiData = () => {
     fetch('http://example.co/api/product')
         .then(response => response.json())
-        .then(data => this.setState({productList:data},()=>{
-          console.log(this.state.productList)
-        }))
+        .then(data => this.setState({productList:data}))
   }
 
 
-  handleUpdate = (prodId) => {
-    console.log('updateProduct')
+  handleUpdate = (prodId, obj) => {
+
+    fetch(`http://example.co/api/product/${prodId}`, {
+      method: 'PUT',
+      headers: {
+        "Content-Type": "application/json;chartset:utf-8"
+      },
+      body: JSON.stringify(obj)
+    })
+    .then(data => this.getApiData())
   }
 
   handleDelete = (prodId) => {
@@ -54,19 +60,20 @@ export default class App extends Component {
       },
       body: JSON.stringify(user)
     })
-    .then(setTimeout(()=>{this.getApiData()},150))
+    .then(data => this.getApiData())
     event.target[0].value = ''
     event.target[1].value = ''
     event.target[2].value = '1'
   }
 
+
+
   render() {
     return (
       <div>
         <Add handleSubmit={this.handleSubmit}/>
+        
         <List productList={this.state.productList} handleUpdate={this.handleUpdate} handleDelete={this.handleDelete}/>
-        <Route path="/" component=''></Route>
-        <Route path="/update" component={Update}/>
       </div>
     )
   }

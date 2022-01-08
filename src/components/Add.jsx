@@ -1,4 +1,5 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
+import './Add.css'
 
 export default class Add extends Component {
 
@@ -7,20 +8,21 @@ export default class Add extends Component {
     const {handleSubmit} = this.props
 
     return (
-        <div className="container">
-          <div className="row justify-content-center" >
-            <form  onSubmit={handleSubmit}>
-              <table align="center">
+        <div className="container mt-3">
+          <div className="row">
+            <div className="d-flex justify-content-center">
+            <form onSubmit={handleSubmit}>
+              <table id="addForm">
                 <tbody>
                   <tr>
-                    <th>ProductName</th>
+                    <th>Product Name</th>
                     <th>Price</th>
                     <th>Category</th>
                     <th>Operator</th>
                   </tr>
                   <tr>
                     <td><input type="text" name="title" /><br /></td>
-                    <td><input type="text" name='price' /></td>
+                    <td><input type="text" name="price" /></td>
                     <td>
                       <select name="categoryId">
                         <option value="1">BALLOON & FLOWER STANDS</option>
@@ -33,6 +35,7 @@ export default class Add extends Component {
                 </tbody>
               </table>
             </form>
+            </div>
           </div>
         </div>
     )
