@@ -5,13 +5,13 @@ export default class Add extends Component {
 
 
   render() {
-    const {handleSubmit} = this.props
+    const {handleCreate} = this.props
 
     return (
         <div className="container mt-3">
           <div className="row">
             <div className="d-flex justify-content-center">
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleCreate}>
               <table id="addForm">
                 <tbody>
                   <tr>
