@@ -3,6 +3,11 @@ import './Add.css'
 
 export default class Add extends Component {
 
+  state = {
+    categoryId:'1',
+    title:'',
+    price:'',
+  }
 
   render() {
     const {handleCreate} = this.props

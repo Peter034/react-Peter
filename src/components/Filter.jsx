@@ -5,7 +5,6 @@ export default class Filter extends Component {
   render() {
     const {categoryIdHandler, rangeHandler, sortHandler, searchHandler, searchBtn} = this.props
     const {categoryId, range, sort, search} = this.props.filter
-    console.log(categoryId)
     return (
       <div className="container mt-3">
         <div className="row">
