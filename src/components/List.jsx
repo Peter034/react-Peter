@@ -154,7 +154,7 @@ export default class List extends Component {
                 {
                   filteredList.map(product => 
                     {
-                      return <Item key={product.prodId} {...product} handleUpdate={handleUpdate} handleDelete={handleDelete}/>
+                      return <Item key={product.prodId} product={product} handleUpdate={handleUpdate} handleDelete={handleDelete}/>
                     }
                   )
                 }

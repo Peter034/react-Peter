@@ -24,24 +24,15 @@ export default class App extends Component {
   }
 
   // create new product
-  handleCreate = (event) => {
-    event.preventDefault()
-    const user = {
-      title: event.target[0].value,
-      price: event.target[1].value,
-      categoryId: event.target[2].value
-    }
+  handleCreate = (obj) => {
     fetch('http://example.co/api/product', {
       method: 'POST',
       headers: {
         "Content-Type": "application/json;charset=utf-8"
       },
-      body: JSON.stringify(user)
+      body: JSON.stringify(obj)
     })
     .then(data => this.getApiData())
-    event.target[0].value = ''
-    event.target[1].value = ''
-    event.target[2].value = '1'
   }
 
   // Delete product
@@ -58,6 +49,7 @@ export default class App extends Component {
   // Update product
   handleUpdate = (prodId, obj) => {
 
+    // update product table
     fetch(`http://example.co/api/product/${prodId}`, {
       method: 'PUT',
       headers: {
@@ -66,6 +58,7 @@ export default class App extends Component {
       body: JSON.stringify(obj)
     })
     .then(data => this.getApiData())
+
   }
 
   render() {

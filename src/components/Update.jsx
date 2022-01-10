@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import './Update.css'
+import './Update.css';
+import PubSub from 'pubsub-js';
 
 export default class Update extends Component {
 
@@ -7,7 +8,20 @@ export default class Update extends Component {
     categoryId:'1',
     title:'',
     price:'',
+    url:''
   }
+
+  componentDidMount(){
+    this.token = PubSub.subscribe('productInfo',(msg,data)=>{
+      this.setState({
+        categoryId:data.categoryId
+      })
+    })
+  }
+
+  componentWillUnmount(){
+    PubSub.unsubscribe(this.token)
+}
 
   categoryHandle = (event) => {
     this.setState({categoryId:event.target.value})
@@ -21,13 +35,19 @@ export default class Update extends Component {
     this.setState({price:event.target.value})
   }
 
-  updateItem = (event,prodId) => {
-    event.preventDefault()
-    const updateObj = this.state
+  urlHandle = (event) => {
+    this.setState({url:event.target.value})
+  }
+
+  updateItem = (prodId) => {
+    const urlArr = this.state.url === '' ? '' : this.state.url.replace("\n").split(";")
+    const updateObj = {
+      ...this.state,
+      url:urlArr
+    }
     if (updateObj.title === '' || updateObj.price === '') {
-      console.log('error')
       alert("please fill in all items")
-      this.setState({categoryId:'1',title:'',price:''})
+      this.setState({categoryId:'1',title:'',price:'',url:''})
       return
     } else {
     this.props.handleUpdate(prodId,updateObj)
@@ -37,15 +57,11 @@ export default class Update extends Component {
 
 
   render() {
-    const {prodId} = this.props
-    const {categoryId,title,price} = this.state
+    const {prodId,product_media} = this.props
+    const {categoryId, title, price, url} = this.state
     return (
       <div id="update">
-        <button type="button" className="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-          Update
-        </button>
-
-        <div className="modal fade" id="exampleModal" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div className="modal fade" id={`infoModal${prodId}`} tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
           <div className="modal-dialog">
             <div className="modal-content">
               <div className="modal-header">
@@ -57,7 +73,7 @@ export default class Update extends Component {
                   <table>
                     <tbody>
                       <tr>
-                        <td>Product Id:</td>
+                        <td>Product Id</td>
                         <td>{prodId}</td>
                       </tr>
                       <tr>
@@ -78,13 +94,27 @@ export default class Update extends Component {
                         <td>Price:</td>
                         <td><input type="text" name="price" value={price} onChange={event => this.priceHandle(event)}/></td>
                       </tr>
+                      <tr>
+                        <td>Add image URL: </td>
+                        <td>
+                          <textarea id="urlContainer" name="price" value={url} onChange={event => this.urlHandle(event)} placeholder="spilt by ';'">
+                          </textarea>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td id="imgContainer">
+                          { 
+                            product_media[0] ? <img src={`https://storage.googleapis.com/luxe_media/wwwroot/${product_media[0].url}`} alt="" /> : ''
+                          }
+                        </td>
+                      </tr>
                     </tbody>
                   </table>
                 </div>
               </form>
               <div className="modal-footer">
                 <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button className="btn btn-primary text-right" data-bs-dismiss="modal" onClick={(event) => this.updateItem(event,prodId)}>Update</button>
+                <button className="btn btn-primary text-right" data-bs-dismiss="modal" onClick={() => this.updateItem(prodId)}>Update</button>
               </div>
             </div>
           </div>
